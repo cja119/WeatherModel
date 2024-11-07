@@ -65,6 +65,7 @@ class RenewableEnergy:
         self.vertices       = vertices
         self.min_radius     = min_radius  
         self.cluster        = cluster
+        
         if meteorological.wind:
             self.allocate_windfarm(meteorological)
             self.wind_power_output(meteorological,power_curve,cluster=cluster, num_clusters=num_clusters)
@@ -252,14 +253,14 @@ class RenewableEnergy:
             else:
                 data = DataFrame({"Wind Data": self.wind_power})
             if self.cluster:
-                data.to_csv(name+'_Clustered_Wind',sep=' ')
+                data.to_csv('/'+meteorological.storage_location+name+'/_Clustered_Wind.csv',sep=' ')
             else:
-                data.to_csv(name+'_Wind',sep=' ')
+                data.to_csv('/'+meteorological.storage_location+name+'/_Wind.csv',sep=' ')
         
         if meteorological.solar:
             if dates:
                 data = DataFrame({"Solar Data": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
                 data = DataFrame({"Solar Data": self.solar_power_output})
-            data.to_csv(name+'_Solar',sep=' ')
+            data.to_csv('/'+meteorological.storage_location+name+'/_Solar.csv',sep=' ')
         pass
