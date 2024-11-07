@@ -253,14 +253,14 @@ class RenewableEnergy:
             else:
                 data = DataFrame({"Wind Data": self.wind_power})
             if self.cluster:
-                data.to_csv('/'+meteorological.storage_location+name+'/_Clustered_Wind.csv',sep=' ')
+                data.to_csv('./'+meteorological.storage_location+'/'+name+'_Clustered_Wind.csv',sep=' ')
             else:
-                data.to_csv('/'+meteorological.storage_location+name+'/_Wind.csv',sep=' ')
+                data.to_csv('./'+meteorological.storage_location+'/'+name+'_Wind.csv',sep=' ')
         
         if meteorological.solar:
             if dates:
                 data = DataFrame({"Solar Data": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
                 data = DataFrame({"Solar Data": self.solar_power_output})
-            data.to_csv('/'+meteorological.storage_location+name+'/_Solar.csv',sep=' ')
+            data.to_csv('./'+meteorological.storage_location+'/'+name+'_Solar.csv',sep=' ')
         pass
