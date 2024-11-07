@@ -32,6 +32,7 @@ class Meteorological:
                 self.wind     = wind
                 self.solar    = solar
                 self.location = location
+                self.storage_location = storage_location
                         
                 # Setting temporal and spatial parameters
                 self.date_lower = date[0]
