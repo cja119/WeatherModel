@@ -1,3 +1,5 @@
 /WeatherData/*
 !/WeatherData/.gitkeep
 !/WeatherData/*.pickle
+/WeatherDataStore/*
+
