@@ -4,11 +4,14 @@ from xarray import open_mfdataset, concat
 from MeteorologicalScripts.Errors import  WSDataFeedError
 from MeteorologicalScripts.SampleWeatherData import geospatial_sampling, time_sampling
 from MeteorologicalScripts.PlotWeatherData import globalplot,boxplot,timeseriesplot
-from os import getcwd
+from os import getcwd, getenv
+from dotenv import load_dotenv
+load_dotenv()
+
 
 class Meteorological:
         def __init__(self, date: tuple[datetime64,datetime64], location: str, wind: bool = False, solar: bool = False, interval: int = 3600,\
-                      storage_location: str ="./WeatherDataStore", n_samp: int = 100, sample_type: str = "Structured", latitudes: tuple[float,float]=(-90,90), longitudes: tuple[float,float]=(-180,180)):
+                      storage_location: str ="./WeatherData", n_samp: int = 100, sample_type: str = "Structured", latitudes: tuple[float,float]=(-90,90), longitudes: tuple[float,float]=(-180,180)):
                 '''
                 The meteorological class sets up the data and samples it in accordance with the hyperparameters as specified. This includes allowing for a four vertex polygon. 
                 
@@ -69,7 +72,14 @@ class Meteorological:
 
                 try:
                         # This will store credentials in a .netrc file so you don't have to re-sign in every time you run the code. 
-                        _ = login(strategy="environment",persist=True)
+                        username = getenv('EARTHDATA_USERNAME')
+                        password = getenv('EARTHDATA_PASSWORD')
+                        environ['EARTHDATA_USERNAME']=username
+                        environ['EATHDATA_PASSWORD']=password
+
+                        _ = login()
+                        
+
                 except Exception as _:
                         print(f'''{_} Autentication Error with EarthData, trying to force the .netrc, .dodsrc and .urs_cookies files to install.
                                 You will be prompted to enter NASA credentials. If you are yet to create an account, set one up via the link below:
