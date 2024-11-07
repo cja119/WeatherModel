@@ -51,11 +51,7 @@ renewableenergy =    RenewableEnergy(weatherdata,
                                             (30,11.88),
                                             ]
                                             )
-df = pd.DataFrame(renewableenergy.power_output)
 
-dir = getcwd()
-chdir(dir+'/PreOptimisationDataStore')
-open('WeatherData.pickle', 'a').close()
-with open('WeatherData.pickle', 'wb') as f:
-    dump(df, f)
-chdir(dir) 
+
+
+RenewableEnergy(weatherdata, points).export_power(weatherdata,name='WindData', dates=True)

@@ -1,7 +1,8 @@
 from scipy.spatial.distance import cdist
 import numpy as np
 import pandas as pd
-
+import os
+import csv
 def update_array(current_array,min_arg,original_array,count,update_strategy='mean'):
 
     i1 = min_arg

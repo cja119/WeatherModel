@@ -230,9 +230,10 @@ class RenewableEnergy:
         # Dropping all values of power output that occur when the ambient temperature is out of the operating range of the turbine.  
         temperature_data            = meteorological.wind_data_spatial_temporal.variables['T10M'].mean(dim=['lat','lon']).values
         conditions                  = [all([ temperature_data[i] >= temperature_range_k[0], temperature_data[i] <= temperature_range_k[1]]) for i in range(len(temperature_data))]
-        self.wind_power_output           = power_output[conditions]
+        self.wind_power             = power_output[conditions]
+
         if cluster:
-            self.clustered_wind_power_output = consecutive_clustering(df,number_of_clusters,update_strategy='medoid')
+            self.wind_power = consecutive_clustering(DataFrame({"Wind Data": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper}),num_clusters,update_strategy='medoid')
         # Calculating a capacity factor for the wind farm. 
         self.wind_capacity_factor        = trapz(self.power_output, dx = meteorological.interval) / (power_curve_points[-1][1] * meteorological.interval * len(self.power_output))
         pass
@@ -246,7 +247,7 @@ class RenewableEnergy:
         '''
         if meteorological.wind:
             if dates:
-                data = DataFrame({"Wind Data": self.wind_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
+                data = DataFrame({"Wind Data": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
                 data = DataFrame({"Wind Data": self.power_output})
             data.to_csv(name,sep=' ')
