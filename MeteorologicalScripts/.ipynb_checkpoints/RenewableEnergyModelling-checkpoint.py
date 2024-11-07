@@ -64,9 +64,10 @@ class RenewableEnergy:
         
         self.vertices       = vertices
         self.min_radius     = min_radius  
+        self.cluster        = cluster
         if meteorological.wind:
             self.allocate_windfarm(meteorological)
-            self.wind_power_output(meteorological,power_curve,cluster, num_clusters)
+            self.wind_power_output(meteorological,power_curve,cluster=cluster, num_clusters=num_clusters)
         if meteorological.solar:
             self.allocate_solarfarm(meteorological)
 
@@ -204,7 +205,7 @@ class RenewableEnergy:
         '''
         # The below function allows for an interpolation of a wind turbines power curve.
 
-        def power_curve(wind_speed,points,cluster):
+        def power_curve(wind_speed,points):
                 
             # Generating an empty array of windspeeds 
             wind_speed  = wind_speed.values
@@ -230,11 +231,12 @@ class RenewableEnergy:
         # Dropping all values of power output that occur when the ambient temperature is out of the operating range of the turbine.  
         temperature_data            = meteorological.wind_data_spatial_temporal.variables['T10M'].mean(dim=['lat','lon']).values
         conditions                  = [all([ temperature_data[i] >= temperature_range_k[0], temperature_data[i] <= temperature_range_k[1]]) for i in range(len(temperature_data))]
-        self.wind_power_output           = power_output[conditions]
+        self.wind_power             = power_output[conditions]
+
         if cluster:
-            self.clustered_wind_power_output = consecutive_clustering(df,number_of_clusters,update_strategy='medoid')
+            self.wind_power = consecutive_clustering(DataFrame({"Wind Data": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper}),num_clusters,update_strategy='medoid')
         # Calculating a capacity factor for the wind farm. 
-        self.wind_capacity_factor        = trapz(self.power_output, dx = meteorological.interval) / (power_curve_points[-1][1] * meteorological.interval * len(self.power_output))
+        self.wind_capacity_factor        = trapz(self.wind_power, dx = meteorological.interval) / (power_curve_points[-1][1] * meteorological.interval * len(self.wind_power))
         pass
 
     def export_power(self,meteorological,name: str, dates=True):
@@ -246,15 +248,18 @@ class RenewableEnergy:
         '''
         if meteorological.wind:
             if dates:
-                data = DataFrame({"Wind Data": self.wind_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
+                data = DataFrame({"Wind Data": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
-                data = DataFrame({"Wind Data": self.power_output})
-            data.to_csv(name,sep=' ')
+                data = DataFrame({"Wind Data": self.wind_power})
+            if self.cluster:
+                data.to_csv(name+'_Clustered_Wind',sep=' ')
+            else:
+                data.to_csv(name+'_Wind',sep=' ')
         
         if meteorological.solar:
             if dates:
-                data = DataFrame({"Solar Data": self.power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
+                data = DataFrame({"Solar Data": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
                 data = DataFrame({"Solar Data": self.solar_power_output})
-            data.to_csv(name,sep=' ')
+            data.to_csv(name+'_Solar',sep=' ')
         pass

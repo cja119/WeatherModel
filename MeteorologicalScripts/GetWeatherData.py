@@ -5,8 +5,6 @@ from MeteorologicalScripts.Errors import  WSDataFeedError
 from MeteorologicalScripts.SampleWeatherData import geospatial_sampling, time_sampling
 from MeteorologicalScripts.PlotWeatherData import globalplot,boxplot,timeseriesplot
 from os import getcwd, getenv
-from dotenv import load_dotenv
-load_dotenv()
 
 
 class Meteorological:
@@ -70,23 +68,9 @@ class Meteorological:
                 
                 '''
 
-                try:
-                        # This will store credentials in a .netrc file so you don't have to re-sign in every time you run the code. 
-                        username = getenv('EARTHDATA_USERNAME')
-                        password = getenv('EARTHDATA_PASSWORD')
-                        environ['EARTHDATA_USERNAME']=username
-                        environ['EATHDATA_PASSWORD']=password
-
-                        _ = login()
+                _ = login()
                         
 
-                except Exception as _:
-                        print(f'''{_} Autentication Error with EarthData, trying to force the .netrc, .dodsrc and .urs_cookies files to install.
-                                You will be prompted to enter NASA credentials. If you are yet to create an account, set one up via the link below:
-                                https://urs.earthdata.nasa.gov/home. Authentication Failed Again: You will also need to navigate to Applications > 
-                                Approved Apps> Approve More Applications > "NASA GESDISC DATA ARCHIVE" > Authorise. ''')
-
-                
                 if self.solar:
                         solar_online = search_data(short_name="M2T1NXRAD",
                                             cloud_hosted=False,
