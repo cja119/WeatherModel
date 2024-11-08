@@ -188,11 +188,11 @@ class RenewableEnergy:
         
 
         # Define a realistic maximum power output
-        max_power_output = 1  # Normal testing power ouput
+        max_power_output = 1000  # Normal testing power ouput
 
         self.solar_power = np.maximum(0, self.eta_rel * self.G_prime)  # Ensure no negative values
-        self.solar_power_output = np.minimum(self.solar_power, max_power_output)  # Apply saturation
-        self.solar_capacity_factor = (np.mean(self.solar_power) / (max_power_output)).values
+        self.solar_power_output = np.minimum(self.solar_power * max_power_output, max_power_output)  # Apply saturation
+        self.solar_capacity_factor = (np.mean(self.solar_power)).values
         pass
 
     def wind_power_output(self,meteorological, power_curve_points, temperature_range_k: tuple[float,float] = (248,323),  hub_height: float = 100, hellman_exponent = 0.15,cluster=False,num_clusters=1000):
@@ -249,9 +249,9 @@ class RenewableEnergy:
         '''
         if meteorological.wind:
             if dates:
-                data = DataFrame({"Wind Data": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
+                data = DataFrame({"Wind Power [GJ/h]": self.wind_power,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
-                data = DataFrame({"Wind Data": self.wind_power})
+                data = DataFrame({"Wind Power [GJ/h]": self.wind_power})
             if self.cluster:
                 data.to_csv('./'+meteorological.storage_location+'/'+name+'_Clustered_Wind.csv',sep=' ')
             else:
@@ -259,8 +259,8 @@ class RenewableEnergy:
         
         if meteorological.solar:
             if dates:
-                data = DataFrame({"Solar Data": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
+                data = DataFrame({"Solar Power [kW]": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
-                data = DataFrame({"Solar Data": self.solar_power_output})
+                data = DataFrame({"Solar Power [kW]": self.solar_power_output})
             data.to_csv('./'+meteorological.storage_location+'/'+name+'_Solar.csv',sep=' ')
         pass

@@ -9,7 +9,7 @@ from os import getcwd, getenv
 
 class Meteorological:
         def __init__(self, date: tuple[datetime64,datetime64], location: str, wind: bool = False, solar: bool = False, interval: int = 3600,\
-                      storage_location: str ="./WeatherData", n_samp: int = 100, sample_type: str = "Structured", latitudes: tuple[float,float]=(-90,90), longitudes: tuple[float,float]=(-180,180)):
+                      storage_location: str ="./WeatherData", n_samp: int = 100, sample_type: str = "Structured", latitudes: tuple[float,float]=(-90,90), longitudes: tuple[float,float]=(-180,180),environment_login=False):
                 '''
                 The meteorological class sets up the data and samples it in accordance with the hyperparameters as specified. This includes allowing for a four vertex polygon. 
                 
@@ -52,7 +52,7 @@ class Meteorological:
 
                 # Setting the time interval (in seconds) and accessing data from NASA's merra2 library. 
                 self.interval   = interval               
-                self.get_data(interval, storage_location=storage_location)
+                self.get_data(interval, storage_location=storage_location,environment_login)
 
                 # Sampling the datasets to generate the requisite dataframes
                 if self.solar:
@@ -62,14 +62,16 @@ class Meteorological:
                 self.wind_data_spatial_temporal             = time_sampling(self.wind_data_spatial, sample_type, interval, n_samp)                
  
 
-        def get_data(self, interval,storage_location): # polygon,
+        def get_data(self, interval,storage_location,environment_login): # polygon,
                 '''
                 This code will access data from the NASA Merra2 dataset, and return that in the form of an xarray dataset.
                 Currently this only works for wind and solar data, but may be expanded in the futur
                 
                 '''
-
-                _ = login()
+                if environment_login:
+                    _ = login(strategy="environment",persist=True)
+                else:  
+                    _ = login()
                         
 
                 if self.solar:
