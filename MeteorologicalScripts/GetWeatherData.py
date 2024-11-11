@@ -52,7 +52,7 @@ class Meteorological:
 
                 # Setting the time interval (in seconds) and accessing data from NASA's merra2 library. 
                 self.interval   = interval               
-                self.get_data(interval, storage_location=storage_location,environment_login)
+                self.get_data(interval, storage_location=storage_location,environment_login=environment_login)
 
                 # Sampling the datasets to generate the requisite dataframes
                 if self.solar:
