@@ -14,8 +14,8 @@ from pickle import load
 import numpy as np
 from ClusteringScripts.Wards_Method import *
 from sklearn import tree
-from ClusteringScripts.Kmeans import *
-from ClusteringScripts.Wards_Method import *
+from MeteorologicalScripts.Kmeans import *
+from MeteorologicalScripts.Wards_Method import *
 from MeteorologicalScripts.DemandProfile import *
 
 dir = getcwd()

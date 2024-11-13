@@ -11,7 +11,7 @@ from scipy.spatial.distance import cdist
 import numpy as np
 import pandas as pd
 from MeteorologicalScripts.GetWeatherData import Meteorological
-from MeteorologicalScripts.RenwableEnergyModelling import RenewableEnergy
+from MeteorologicalScripts.RenewableEnergyModelling import RenewableEnergy
 from MeteorologicalScripts.DemandProfile import *
 from ClusteringScripts.Kmeans import *
 from PreOptimisationDataStore.DefaultParameters import Default_Params
