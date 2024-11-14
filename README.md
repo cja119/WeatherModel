@@ -13,3 +13,8 @@ export EARTHDATA_PASSWORD="Your_Password"
 ```
 The python file 'ClusterWeatherData.py' can then be used to generate the Culsters using Ward's method. N.B., this will override the default clustered datasets saved in the abovementioned csv files. 
 
+## Sample Weather Data
+
+<p align="center">
+  <img src="image.png" alt="Centered Image" width="900"/>
+</p>
