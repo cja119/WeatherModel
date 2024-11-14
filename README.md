@@ -50,7 +50,7 @@ $$
 P_{turb}= f(v(h,v_{H_0}(t)))
 $$
 
-For the wind data, due to the long term nature of weather patterns, it is optional to apploy Ward's method of heirarchical clustering by setting the boolean parameter 'cluster' to True when initialising the RenewableEnergy Module. 
+For the wind data, due to the long term nature of weather patterns, it is optional to apply Ward's method of heirarchical clustering by setting the boolean parameter 'cluster' to True when initialising the RenewableEnergy Module. 
 
 ## Solar Modelling
 
