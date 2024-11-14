@@ -1,4 +1,4 @@
-# Renewable Energy Systems Model
+# Global Renewable Energy Systems Model
 
 These functions are used repeatedly accross many different repositories for my research. I keep them updated, so figured it would be best to keep the repository in one location (rather than repeating the files accross many repositories) such that they can be updated unilaterally. 
 
