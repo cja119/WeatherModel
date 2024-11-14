@@ -1,8 +1,7 @@
-# Global Renewable Energy Systems Model
+# Global Renewable Energy Systems Model [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3124/)  
 
 These functions are used repeatedly accross many different repositories for my research. I keep them updated, so figured it would be best to keep the repository in one location (rather than repeating the files accross many repositories) such that they can be updated unilaterally. 
-
-## How to use this Repository
+## How to use this Repository 
 
 First, clone the repository to your local system:
 ```
