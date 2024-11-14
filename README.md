@@ -1,4 +1,4 @@
-# Global Renewable Energy Systems Model [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3124/)  
+# Global Renewable Energy Systems Model [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3124/) [![Imperial](https://img.shields.io/badge/Imperial-0000C5.svg)](www.imperial.ac.uk)
 
 These functions are used repeatedly accross many different repositories for my research. I keep them updated, so figured it would be best to keep the repository in one location (rather than repeating the files accross many repositories) such that they can be updated unilaterally. 
 ## How to use this Repository 
@@ -27,7 +27,7 @@ export EARTHDATA_PASSWORD="Your_Password"
 ```
 The python file 'ClusterWeatherData.py' can then be used to generate the Culsters using Ward's method [2]. N.B., this will override the default clustered datasets saved in the abovementioned csv files. 
 
-## Weather Data
+## Weather Data [![EarthData](https://img.shields.io/badge/NASA-MERRA2-CF4A3B.svg)](https://urs.earthdata.nasa.gov/)
 
 As abovementioned, this model uses NASA MERRA-2 reanalysis. Data are samlped at a given temporal interval and are linearly interpolated with respect to the latitudnal and logitudnal coordinates, in order to give the weather data for the desired location. A sample of the weather data derived from this model is showed below. 
 
