@@ -12,7 +12,7 @@ sys.path.append(module_folder_path)
 from os import getcwd, chdir
 from pickle import load
 import numpy as np
-from ClusteringScripts.Wards_Method import *
+from MeteorologicalScripts.Wards_Method import *
 from sklearn import tree
 from MeteorologicalScripts.Kmeans import *
 from MeteorologicalScripts.Wards_Method import *

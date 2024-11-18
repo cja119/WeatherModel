@@ -13,8 +13,7 @@ import pandas as pd
 from MeteorologicalScripts.GetWeatherData import Meteorological
 from MeteorologicalScripts.RenewableEnergyModelling import RenewableEnergy
 from MeteorologicalScripts.DemandProfile import *
-from ClusteringScripts.Kmeans import *
-from PreOptimisationDataStore.DefaultParameters import Default_Params
+from MeteorologicalScripts.Wards_Method import *
 from os import getcwd,chdir
 from pickle import dump,load
 
