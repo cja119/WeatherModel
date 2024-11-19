@@ -18,15 +18,15 @@ from os import getcwd,chdir
 from pickle import dump,load
 
 points = [(sys.argv[0],sys.argv[3]),(sys.argv[0],sys.argv[3]),(sys.argv[1],sys.argv[2]),(sys.argv[1],sys.argv[2])]
-start_date   =  np.datetime64('2022-01-01', 'ns') 
-end_date     = np.datetime64('2023-01-01', 'ns') 
+start_date   =  np.datetime64('2023-01-01', 'ns') 
+end_date     = np.datetime64('2024-01-01', 'ns') 
 
 weatherdata = Meteorological(date = (start_date,end_date),
                                 location= 'Coastal Chile', 
                                 wind = True,
                                 solar = False, 
                                 interval = 3600,
-                                storage_location ="./WeatherData", 
+                                storage_location =module_folder_path+"/WeatherData", 
                                 n_samp = 100, 
                                 sample_type = "Structured", 
                                 latitudes =(sys.argv[0], sys.argv[1]), 

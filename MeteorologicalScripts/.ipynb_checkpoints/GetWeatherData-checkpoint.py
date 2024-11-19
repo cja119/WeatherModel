@@ -78,7 +78,7 @@ class Meteorological:
                                             temporal = (f"{(self.date_lower)}"[0:10],f"{(self.date_upper)}"[0:10]))
                         solar_files  = download(solar_online,storage_location)
                         
-                        self.solar_data =  open_mfdataset(solar_files)
+                        self.solar_data =  open_mfdataset(solar_files,engine='netcdf4')
                 
                 # This grabs the wind speed data to use in the model. 
                 wind_online = search_data(short_name="M2T1NXSLV",
@@ -87,7 +87,7 @@ class Meteorological:
 
                 # This will download the datasets.                         
                 wind_files  = download(wind_online,storage_location)
-                self.wind_data =  open_mfdataset(wind_files)
+                self.wind_data =  open_mfdataset(wind_files,engine='netcdf4')
 
                             
                 
