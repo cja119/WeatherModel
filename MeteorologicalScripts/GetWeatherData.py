@@ -42,11 +42,9 @@ class Meteorological:
                         
                  # Ensuring the lattitudes and longitudes are in the correct order 
                 if latitudes[0] > latitudes[1]:
-                        self.latitudes[0] = latitudes[1]
-                        self.latitudes[1] = latitudes[0]
+                        self.latitudes = (latitudes[1],latitudes[0])
                 if longitudes[0] > longitudes[1]:
-                        self.longitudes[0] = longitudes[1]
-                        self.longitudes[1] = longitudes[0]
+                        self.longitudes = (longitudes[1],longitudes[0])
 
                 # Trying to load data from an existing model, saved as a .pickel file in the 'MetData' folder
 

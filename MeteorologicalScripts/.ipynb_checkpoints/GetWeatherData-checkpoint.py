@@ -42,17 +42,15 @@ class Meteorological:
                         
                  # Ensuring the lattitudes and longitudes are in the correct order 
                 if latitudes[0] > latitudes[1]:
-                        self.latitudes[0] = latitudes[1]
-                        self.latitudes[1] = latitudes[0]
+                        self.latitudes = (latitudes[1],latitudes[0])
                 if longitudes[0] > longitudes[1]:
-                        self.longitudes[0] = longitudes[1]
-                        self.longitudes[1] = longitudes[0]
+                        self.longitudes = (longitudes[1],longitudes[0])
 
                 # Trying to load data from an existing model, saved as a .pickel file in the 'MetData' folder
 
                 # Setting the time interval (in seconds) and accessing data from NASA's merra2 library. 
                 self.interval   = interval               
-                self.get_data(interval, storage_location=storage_location,environment_login)
+                self.get_data(interval, storage_location=storage_location,environment_login=environment_login)
 
                 # Sampling the datasets to generate the requisite dataframes
                 if self.solar:
