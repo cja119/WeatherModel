@@ -9,7 +9,7 @@ git clone https://github.com/cja119/WeatherModel.git
 ````
 Then, install all dependencies by running the following:
 ```
-pip install -r requirements.txt
+pip install -r dependencies.txt
 ```
 Now you are ready to run the scripts! Set variables of your desired coordinates (lat_1 = minimum latitude, lat_2 = maximum latitude, lon_1 = minimum latitude, lon_2 = maximum latitude)
 ```
