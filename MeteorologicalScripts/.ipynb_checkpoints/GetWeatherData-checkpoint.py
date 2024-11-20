@@ -37,15 +37,20 @@ class Meteorological:
                 # Setting temporal and spatial parameters
                 self.date_lower = date[0]
                 self.date_upper = date[1]
-                self.latitudes  = latitudes
-                self.longitudes = longitudes
-                        
+                
+
                  # Ensuring the lattitudes and longitudes are in the correct order 
                 if latitudes[0] > latitudes[1]:
                         self.latitudes = (latitudes[1],latitudes[0])
+                        latitudes = self.latitudes
+                else: 
+                    self.latitudes  = latitudes
                 if longitudes[0] > longitudes[1]:
                         self.longitudes = (longitudes[1],longitudes[0])
-
+                        longitudes = self.longitudes
+                else:
+                    self.longitudes = longitudes
+                        
                 # Trying to load data from an existing model, saved as a .pickel file in the 'MetData' folder
 
                 # Setting the time interval (in seconds) and accessing data from NASA's merra2 library. 

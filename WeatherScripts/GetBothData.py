@@ -17,9 +17,12 @@ from MeteorologicalScripts.Wards_Method import *
 from os import getcwd,chdir
 from pickle import dump,load
 
-points = [(sys.argv[0],sys.argv[3]),(sys.argv[0],sys.argv[3]),(sys.argv[1],sys.argv[2]),(sys.argv[1],sys.argv[2])]
+
 start_date   =  np.datetime64('2023-01-01', 'ns') 
 end_date     = np.datetime64('2024-01-01', 'ns') 
+
+print(f'Lats: {(float(sys.argv[1]), float(sys.argv[2]))}')
+print(f'Lons: {(float(sys.argv[3]),float(sys.argv[4]))}')
 
 weatherdata = Meteorological(date = (start_date,end_date),
                                 location= 'Coastal Chile', 
@@ -29,13 +32,13 @@ weatherdata = Meteorological(date = (start_date,end_date),
                                 storage_location =module_folder_path+"/WeatherData", 
                                 n_samp = 100, 
                                 sample_type = "Structured", 
-                                latitudes =(sys.argv[0], sys.argv[1]), 
-                                longitudes =(sys.argv[2],sys.argv[3]),
+                                latitudes =(float(sys.argv[1]), float(sys.argv[2])), 
+                                longitudes =(float(sys.argv[3]),float(sys.argv[4])),
                                 environment_login=True
                                 )
 
+
 renewableenergy =    RenewableEnergy(weatherdata,
-                                        points,
                                         [(0,0.0),       # These are points along the power curve. 
                                             (3,0.0),       # are used in the ouput curve.
                                             (4,0.648),     # Wind speeds are in [m/s].
@@ -54,4 +57,4 @@ renewableenergy =    RenewableEnergy(weatherdata,
 
 
 
-RenewableEnergy(weatherdata, points).export_power(weatherdata,name='CoastalChile', dates=True)
+renewableenergy.export_power(weatherdata,name='CoastalChile', dates=True)

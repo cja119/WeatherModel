@@ -51,6 +51,7 @@ def filter_points(coordinates, world_test):
     mask_2d = mask.reshape(lon_grid.shape)
 
     # Producing filtered points and xarray dataset and returning these as the function output. 
+    print(mask_2d)
     filtered_latitudes  = lat_grid[mask_2d]
     filtered_longitudes = lon_grid[mask_2d]
     filtered_world_test = world_test.where(mask_2d)
@@ -60,11 +61,13 @@ def filter_points(coordinates, world_test):
 
 
 class RenewableEnergy:
-    def __init__(self, meteorological,vertices: list[tuple[float,float],tuple[float,float],tuple[float,float],tuple[float,float]], power_curve = None, min_radius: float = 100, cluster = False, num_clusters = 1000):
+    def __init__(self, meteorological, power_curve = None, min_radius: float = 100, cluster = False, num_clusters = 1000):
         
-        self.vertices       = vertices
         self.min_radius     = min_radius  
         self.cluster        = cluster
+        lons = meteorological.longitudes
+        lats = meteorological.latitudes
+        self.vertices = [(lats[0],lons[1]),(lats[1],lons[1]),(lats[1],lons[0]),(lats[0],lons[0])]
         
         if meteorological.wind:
             self.allocate_windfarm(meteorological)
@@ -79,8 +82,8 @@ class RenewableEnergy:
         '''
 
         # Generating ordered lists of vertex coordinates.
-        longitudes = (min(list(zip(*self.vertices))[1]), max(list(zip(*self.vertices))[1]))
-        latitudes  = (min(list(zip(*self.vertices))[0]), max(list(zip(*self.vertices))[0]))
+        longitudes = meteorological.longitudes
+        latitudes  = meteorological.latitudes
 
         # Sampling the data within these coordinates. 
         square_datset = geospatial_sampling(meteorological.wind_data_spatial_temporal, latitudes, longitudes)
@@ -117,8 +120,8 @@ class RenewableEnergy:
             plot:       Boolean -> Whether a plot of the windfarm is desired. '''
         
         # Generating ordered lists of vertex coordinates.
-        longitudes = (min(list(zip(*self.vertices))[1]), max(list(zip(*self.vertices))[1]))
-        latitudes  =(min(list(zip(*self.vertices))[0]), max(list(zip(*self.vertices))[0]))
+        longitudes = meteorological.longitudes
+        latitudes  = meteorological.latitudes
 
         # Sampling the data within these coordinates.   
         square_datset = geospatial_sampling(meteorological.solar_data_spatial_temporal, latitudes, longitudes)
