@@ -27,7 +27,7 @@ print(f'Lons: {(float(sys.argv[3]),float(sys.argv[4]))}')
 weatherdata = Meteorological(date = (start_date,end_date),
                                 location= 'Coastal Chile', 
                                 wind = True,
-                                solar = False, 
+                                solar = True, 
                                 interval = 3600,
                                 storage_location =module_folder_path+"/WeatherData", 
                                 n_samp = 100, 
@@ -57,4 +57,4 @@ renewableenergy =    RenewableEnergy(weatherdata,
 
 
 
-renewableenergy.export_power(weatherdata,name='CoastalChile', dates=True)
+renewableenergy.export_power(weatherdata,name='CoastalChile', dates=False)
