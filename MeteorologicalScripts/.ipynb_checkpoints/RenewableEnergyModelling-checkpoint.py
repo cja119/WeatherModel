@@ -243,7 +243,7 @@ class RenewableEnergy:
         self.wind_capacity_factor        = trapz(self.wind_power, dx = meteorological.interval) / (power_curve_points[-1][1] * meteorological.interval * len(self.wind_power))
         pass
 
-    def export_power(self,meteorological,name: str, dates=True):
+    def export_power(self,meteorological,name: str,location="WeatherData", dates=True):
         '''
         This function saves the wind speed data in a csv, if required.
 
@@ -256,14 +256,14 @@ class RenewableEnergy:
             else:
                 data = DataFrame({"Wind Power [GJ/h]": self.wind_power})
             if self.cluster:
-                data.to_csv(meteorological.storage_location+'/'+name+'_Clustered_Wind.csv',sep=' ')
+                data.to_csv('./'+location+'/'+name+'_Clustered_Wind.csv',sep=' ')
             else:
-                data.to_csv(meteorological.storage_location+'/'+name+'_Wind.csv',sep=' ')
+                data.to_csv('./'+location+'/'+name+'_Wind.csv',sep=' ')
         
         if meteorological.solar:
             if dates:
                 data = DataFrame({"Solar Power [kW]": self.solar_power_output,"Start Date": meteorological.date_lower,"End Date": meteorological.date_upper})
             else:
                 data = DataFrame({"Solar Power [kW]": self.solar_power_output})
-            data.to_csv(meteorological.storage_location+'/'+name+'_Solar.csv',sep=' ')
+            data.to_csv('./'+location+'/'+name+'_Solar.csv',sep=' ')
         pass
