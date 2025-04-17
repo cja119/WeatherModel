@@ -1,3 +1,7 @@
+"""
+This module contains custom error classes for handling specific exceptions
+"""
+
 class AuthenticationError(RuntimeError):
         '''Still Failed to authenticate with EarthData. Try again, or check for issues with EarthData online.'''
         pass

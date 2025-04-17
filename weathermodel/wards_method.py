@@ -1,10 +1,23 @@
+"""
+This code implements the Wards method of clustering, which is a bottom up approach to clustering.
+"""
+
 from scipy.spatial.distance import cdist
 import numpy as np
 import pandas as pd
 import os
 import csv
-def update_array(current_array,min_arg,original_array,count,update_strategy='mean'):
 
+def update_array(
+        current_array,
+        min_arg,
+        original_array,
+        count,
+        update_strategy='mean'
+        ):
+    """
+    This function performs updates to the current array based on the minimum argument found in the previous step.
+    """
     i1 = min_arg
     i2 = len(current_array)-1 if min_arg == 0 else min_arg-1
 
@@ -14,7 +27,10 @@ def update_array(current_array,min_arg,original_array,count,update_strategy='mea
     t1 = int(sum([current_array[i][1] for i in range(i1)]))
     t2 = int(sum([current_array[i][1] for i in range(i2)]))
 
-    samples = np.concatenate(([current_array[i1][0]]*int(current_array[i1][1]),[current_array[i2][0]]*int(current_array[i2][1])))
+    samples = np.concatenate((
+            [current_array[i1][0]]*int(current_array[i1][1]),
+            [current_array[i2][0]]*int(current_array[i2][1])
+        ))
 
     if update_strategy == 'mean':
         i3 = i1
@@ -40,33 +56,69 @@ def update_array(current_array,min_arg,original_array,count,update_strategy='mea
         new_array = np.concatenate((current_array[:i2],[[w3,l3]],current_array[i1+1:]))
     return new_array,count
 
-def consecutive_clustering(df,number_of_clusters,update_strategy='medoid'):
+def consecutive_clustering(
+        df,
+        number_of_clusters,
+        update_strategy='medoid'
+        ):
+    """
+    This algorithm executes the consecutive clustering process. This is a bottom up process
+    so starts with the complete timeseries and will piecewise cluster the data until the target
+    number of points are achieved.
+    """
+
     current_array = df.values
-    current_array = np.vstack((df.values.reshape(df.shape[0]),np.ones(df.shape[0]))).T
+    current_array = np.vstack((
+        df.values.reshape(df.shape[0]),
+        np.ones(df.shape[0])
+        )).T
+    
     count = 0
+    
     while len(current_array[:,0]) > number_of_clusters-1:
         
         breakpoint = np.random.randint(0,len(current_array)-1)
         temp_array = np.concatenate((current_array[breakpoint:],current_array[:breakpoint]))
-        temp_min_arg = np.argmin(((2*np.abs(temp_array[:,1]) * np.abs(np.insert(temp_array[:-1,1],0,temp_array[-1,1]))))/(np.abs(temp_array[:,1]) + np.abs((np.insert(temp_array[:-1,1],0,temp_array[-1,1]))))*(temp_array[:,0]-np.insert(temp_array[:-1,0],0,temp_array[-1,0]))**2)
+        temp_min_arg = np.argmin(
+            ((2*np.abs(temp_array[:,1]) * np.abs(np.insert(temp_array[:-1,1],0,temp_array[-1,1]))))\
+                /(np.abs(temp_array[:,1]) + np.abs((np.insert(temp_array[:-1,1],0,temp_array[-1,1]))))\
+                    *(temp_array[:,0]-np.insert(temp_array[:-1,0],0,temp_array[-1,0]))**2
+                    )
+        
         min_arg = temp_min_arg - breakpoint
+        
         if min_arg < 0:
             min_arg += len(current_array)
-        current_array,count = update_array(current_array,min_arg,df.values,count,update_strategy)
-
-
+        
+        current_array,count = update_array(
+            current_array,
+            min_arg,
+            df.values,
+            count,
+            update_strategy
+            )
     current_array[0][1] -= count
     final_array = np.concatenate((current_array,[[current_array[0][0],count]])) 
+    
     return final_array
 
 
 def compute_objective(predictions, df):
+    """
+    This function computes the objective function for the clustering process.
+    It is the sum of the squared differences between the clusterd and actual values.
+    """
+    
     obj=0
     for i in range(len(predictions)):
         obj += (predictions[i] - df[0][i])**2
+    
     return (float(obj) / len(df))
 
 def save_csv(array,title,folder='PreOptimisationDataStore'):
+    """
+    This function saves the clustered array to a csv file.
+    """
     if isinstance(array,dict):
         data = array        
         pass

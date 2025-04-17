@@ -1,3 +1,9 @@
+"""
+This code is part of the weathermodel package, which is designed to handle and process weather data.
+The code provides functions for sampling weather data from an xarray dataset, either randomly or at structured intervals.
+It includes functions for both time-based and geospatial sampling.
+"""
+
 from numpy import random, argmax, datetime64, arange, array
 
 def time_sampling(dataset, sample_type: str = "Structured", interval: int = 3600, n_samp: int = 100, graph: bool = False, 
