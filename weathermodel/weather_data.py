@@ -1,18 +1,22 @@
+"""
+This is the WeatherData class, which is used to access and sample meteorological data from NASA's MERRA-2 dataset.
+"""
+
+
 from numpy import datetime64
 from earthaccess import login, search_data, download 
 from xarray import open_mfdataset, concat
-from MeteorologicalScripts.Errors import  WSDataFeedError
-from MeteorologicalScripts.SampleWeatherData import geospatial_sampling, time_sampling
-from MeteorologicalScripts.PlotWeatherData import globalplot,boxplot,timeseriesplot
+from .errors import  WSDataFeedError
+from .sampling import geospatial_sampling, time_sampling
+from .plots import globalplot,boxplot,timeseriesplot
 from os import getcwd, getenv
 
 
-class Meteorological:
-        def __init__(self, date: tuple[datetime64,datetime64], location: str, wind: bool = False, solar: bool = False, interval: int = 3600,\
-                      storage_location: str ="./WeatherData", n_samp: int = 100, sample_type: str = "Structured", latitudes: tuple[float,float]=(-90,90), longitudes: tuple[float,float]=(-180,180),environment_login=False):
-                '''
-                The meteorological class sets up the data and samples it in accordance with the hyperparameters as specified. This includes allowing for a four vertex polygon. 
-                
+class WeatherData:
+        """""
+        The meteorological class sets up the data and samples it in accordance with the hyperparameters as specified. 
+        This includes allowing for a four vertex polygon. 
+        
                 date:                   tuple[datetime64,datetime64]    -> Start and end date of modelling.
                 location:               string                          -> Name of place being modelled (for graphs)
                 wind:                   boolean                         -> Is it a windfarm?
@@ -25,12 +29,27 @@ class Meteorological:
                 longitudes              tuple[float,float]              -> (Min,Max) Longitudes for the region of interest. 
                 
                 
-                '''
+        """
+        def __init__(
+                      self,
+                      date: tuple[datetime64,datetime64], 
+                      location: str, 
+                      wind: bool = False, 
+                      solar: bool = False, 
+                      interval: int = 3600,\
+                      storage_location: str ="./tmp",
+                      n_samp: int = 100,
+                      sample_type: str = "Structured",
+                      latitudes: tuple[float,float] = (-90,90),
+                      longitudes: tuple[float,float ] =(-180,180),
+                      environment_login: bool = False
+                      ):
+                
                 dir = getcwd()
 
                 # Setting boolean hyperparameters and location descriptor
-                self.wind     = wind
-                self.solar    = solar
+                self.wind = wind
+                self.solar = solar
                 self.location = location
                 self.storage_location = storage_location
                         
@@ -55,22 +74,48 @@ class Meteorological:
 
                 # Setting the time interval (in seconds) and accessing data from NASA's merra2 library. 
                 self.interval   = interval               
-                self.get_data(interval, storage_location=storage_location,environment_login=environment_login)
+                self.get_data(
+                       interval,
+                       storage_location=storage_location,
+                       environment_login=environment_login
+                       )
 
                 # Sampling the datasets to generate the requisite dataframes
                 if self.solar:
-                        self.solar_data_spatial             = geospatial_sampling(self.solar_data,latitudes,longitudes)
-                        self.solar_data_spatial_temporal    = time_sampling(self.solar_data_spatial, sample_type, interval, n_samp)
-                self.wind_data_spatial                      = geospatial_sampling(self.wind_data,latitudes,longitudes)
-                self.wind_data_spatial_temporal             = time_sampling(self.wind_data_spatial, sample_type, interval, n_samp)                
+                        self.solar_data_spatial = geospatial_sampling(
+                               self.solar_data,
+                               latitudes,
+                               longitudes
+                               )
+                        self.solar_data_spatial_temporal  = time_sampling(
+                                self.solar_data_spatial,
+                                sample_type,
+                                interval,
+                                n_samp
+                                )
+                self.wind_data_spatial = geospatial_sampling(
+                       self.wind_data,
+                       latitudes,
+                       longitudes
+                       )
+                self.wind_data_spatial_temporal = time_sampling(
+                        self.wind_data_spatial,
+                        sample_type,
+                        interval,
+                        n_samp
+                        )                
  
 
-        def get_data(self, interval,storage_location,environment_login): # polygon,
-                '''
+        def get_data(self, 
+                     interval,
+                     storage_location,
+                     environment_login
+                     ): 
+                """
                 This code will access data from the NASA Merra2 dataset, and return that in the form of an xarray dataset.
                 Currently this only works for wind and solar data, but may be expanded in the futur
+                """
                 
-                '''
                 if environment_login:
                     _ = login(strategy="environment",persist=True)
                 else:  

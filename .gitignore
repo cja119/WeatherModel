@@ -1,6 +1,7 @@
-/WeatherData/*
-!/WeatherData/.gitkeep
-!/WeatherData/*.pickle
-!/WeatherData/*.csv
-/WeatherDataStore/*
+/data/*
+!/weathermodel/.gitkeep
+!/data/*.pickle
+!/data/*.csv
 .env
+/tmp/
+.DS_Store

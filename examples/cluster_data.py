@@ -12,11 +12,11 @@ sys.path.append(module_folder_path)
 from os import getcwd, chdir
 from pickle import load
 import numpy as np
-from MeteorologicalScripts.Wards_Method import *
+from weathermodel.Wards_Method import *
 from sklearn import tree
-from MeteorologicalScripts.Kmeans import *
-from MeteorologicalScripts.Wards_Method import *
-from MeteorologicalScripts.DemandProfile import *
+from weathermodel.Kmeans import *
+from weathermodel.Wards_Method import *
+from weathermodel.demand_profile import *
 
 dir = getcwd()
 chdir(dir+'/PreOptimisationDataStore')
