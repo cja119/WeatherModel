@@ -32,7 +32,7 @@ The python file 'ClusterWeatherData.py' can then be used to generate the Culster
 As abovementioned, this model uses NASA MERRA-2 reanalysis. Data are samlped at a given temporal interval and are linearly interpolated with respect to the latitudnal and logitudnal coordinates, in order to give the weather data for the desired location. A sample of the weather data derived from this model is showed below. 
 
 <p align="center">
-  <img src="image.png" alt="Centered Image" width="900"/>
+  <img src="png/image.png" alt="Centered Image" width="900"/>
 </p>
 
 ## Wind Modelling
