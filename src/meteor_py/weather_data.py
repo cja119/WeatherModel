@@ -48,7 +48,7 @@ class WeatherData:
                       ):
                 
                 if storage_location is None:
-                    storage_location = Path(__file__).resolve().parent.parent / "/data/cache"
+                    storage_location = Path(__file__).resolve().parent.parent / "data/cache"
                     
 
                 # Setting boolean hyperparameters and location descriptor
