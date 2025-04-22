@@ -1,41 +1,83 @@
-# Global Renewable Energy Model [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3124/) [![Imperial](https://img.shields.io/badge/Imperial-0000C5.svg)](https://www.imperial.ac.uk) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14678366.svg)](https://doi.org/10.5281/zenodo.14678366)
-
+# Python-Meteor [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3124/)  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14678366.svg)](https://doi.org/10.5281/zenodo.14678366)
 These functions are used repeatedly accross many different repositories for my research. I keep them updated, so figured it would be best to keep the repository in one location (rather than repeating the files accross many repositories) such that they can be updated unilaterally. 
-## How to use this Repository 
+<p align="center">
+  <img src="png/logo.png" alt="Centered Image" width="900"/>
+</p>
+
+
+## Quick Start 
 
 First, clone the repository to your local system:
 ```
-git clone https://github.com/cja119/WeatherModel.git
+git clone https://github.com/cja119/meteor_py.git
 ````
-Then, install all dependencies by running the following:
+Then, install all the package!
 ```
-pip install -r dependencies.txt
+pip install -e meteor_py
 ```
-Now you are ready to run the scripts! Set variables of your desired coordinates (lat_1 = minimum latitude, lat_2 = maximum latitude, lon_1 = minimum latitude, lon_2 = maximum latitude)
-```
-python3 WeatherScripts/GetBothData.py "$lat_1" "$lat_2" "$lon_1" "$lon_2"
-```
-This will grab the weather data and save it in the WeatherData as a csv file. You can edit more parameters by changing the python files themselves (such as temporal resolution, start and end time, power curves etc.
-
-Running the python scripts 'GetWeatherData.py' will grab the weatherdata files from the NASA Merra-2 database [1]. This is achieved using the [EarthAccess Library](https://earthaccess.readthedocs.io/en/latest/) (N.B., this will require an [EarthData](https://urs.earthdata.nasa.gov/) account, with 'NASA GESDISC DATA ARCHIVE' activated under the applications tab). Once set up, save your username and password as environment variables using the following shell commands:
+Running the python function 'WeatherData' will grab the weatherdata files from the NASA Merra-2 database [1]. This is achieved using the [EarthAccess Library](https://earthaccess.readthedocs.io/en/latest/) (N.B., this will require an [EarthData](https://urs.earthdata.nasa.gov/) account, with 'NASA GESDISC DATA ARCHIVE' activated under the applications tab). Once set up, save your username and password as environment variables using the following shell commands:
 ```
 export EARTHDATA_USERNAME="Your_Username"
-```
 
-```
 export EARTHDATA_PASSWORD="Your_Password"
 ```
-The python file 'ClusterWeatherData.py' can then be used to generate the Culsters using Ward's method [2]. N.B., this will override the default clustered datasets saved in the abovementioned csv files. 
 
-## Weather Data [![EarthData](https://img.shields.io/badge/NASA-MERRA2-CF4A3B.svg)](https://urs.earthdata.nasa.gov/)
+## Example Use
+```python
+from meteor_py import *
+import sys
+from numpy import datetime64
+
+
+start_date   =  datetime64('2023-01-01', 'ns') 
+end_date     = datetime64('2024-01-01', 'ns') 
+
+weatherdata = WeatherData(
+    date = (start_date,end_date),
+    location= 'your_location', 
+    wind = True,
+    solar = True, 
+    interval = 3600,
+    n_samp = 100, 
+    sample_type = "Structured",
+    latitudes =(float(sys.argv[1]), float(sys.argv[2])), 
+    longitudes =(float(sys.argv[3]),float(sys.argv[4])),
+    environment_login=True
+    )
+
+
+renewableenergy = RenewableEnergy(
+    weatherdata,
+    [
+        (0, 0.0),       # These are points along the power curve.
+        (3, 0.0),       # are used in the output curve.
+        (4, 0.648),     # Wind speeds are in [m/s].
+        (5, 1.4832),
+        (6, 2.736),
+        (7, 4.4676),
+        (8, 6.7104),
+        (9, 9.3168),
+        (10, 11.2392),
+        (11, 11.8008),
+        (12, 11.8728),
+        (13, 11.88),
+        (30, 11.88),
+    ]
+)
+
+renewableenergy.export_power(weatherdata,name='file_name', dates=False)
+
+```
+
+## Under The Hood [![EarthData](https://img.shields.io/badge/NASA-MERRA2-CF4A3B.svg)](https://urs.earthdata.nasa.gov/)
 
 As abovementioned, this model uses NASA MERRA-2 reanalysis. Data are samlped at a given temporal interval and are linearly interpolated with respect to the latitudnal and logitudnal coordinates, in order to give the weather data for the desired location. A sample of the weather data derived from this model is showed below. 
 
 <p align="center">
-  <img src="png/image.png" alt="Centered Image" width="900"/>
+  <img src="png/image.png" alt="Centered Image" width="600"/>
 </p>
 
-## Wind Modelling
+## Wind Model
 
 The wind farm for this model is a Vestas 3.3 MW turbine, with a slightly extended cutoff speed of 30m/s. The wind speed at the hub height (100m) is modelled using a hellman exponant of 0.15, with the following equaiton:
 
@@ -51,7 +93,7 @@ $$
 
 For the wind data, due to the long term nature of weather patterns, it is optional to apply Ward's method of heirarchical clustering by setting the boolean parameter 'cluster' to True when initialising the RenewableEnergy Module. 
 
-## Solar Modelling
+## Solar Model
 
 For this repository, the solar farm is modelled to be a system using dual axis tilt to track the sun's position. The methodology employed here is based off that described by Pfenninger and Staffel (2016) [3]. In this model, the ratio of diffuse radiation $I_{dif}$ to global irradiation, $I_{glob}$, is estimated using the hourly clearness index and the following logistic function [4]:
 
