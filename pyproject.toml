@@ -25,4 +25,4 @@ dependencies = [
 ]
 
 [tool.setuptools.package-data]
-meteor_py = ["data/*.csv"]
+meteor_py = ["/src/meteor_py/data/*.csv"]
