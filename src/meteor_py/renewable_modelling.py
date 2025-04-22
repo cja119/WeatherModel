@@ -260,7 +260,10 @@ class RenewableEnergy:
         power_output = power_curve(self.wind_speed_hub_height,power_curve_points)
 
         # Dropping all values of power output that occur when the ambient temperature is out of the operating range of the turbine.  
-        temperature_data  = weather_data.wind_data_spatial_temporal.variables['T10M'].mean(dim=['lat','lon']).values
+        temperature_data  = weather_data.wind_data_spatial_temporal.variables['T10M'].mean(
+            dim=['lat','lon']
+        ).values
+        
         conditions = [
             all(
                 [temperature_data[i] >= temperature_range_k[0], temperature_data[i] <= temperature_range_k[1]]
@@ -301,8 +304,8 @@ class RenewableEnergy:
                                     to the left of the wind speed data.
         '''
         if location is None:
-            location = Path(__file__).resolve().parent.parent / "data"
-        
+            location = Path(__file__).resolve().parent.parent 
+            
         if weather_data.wind:
             if dates:
                 data = DataFrame(
@@ -315,9 +318,10 @@ class RenewableEnergy:
             else:
                 data = DataFrame({"Wind Power [GJ/h]": self.wind_power})
             if self.cluster:
-                data.to_csv('./'+location+'/'+name+'_Clustered_Wind.csv',sep=' ')
+                
+                data.to_csv(location / f'data/{name}_clustered_wind.csv' ,sep=' ')
             else:
-                data.to_csv('./'+location+'/'+name+'_Wind.csv',sep=' ')
+                data.to_csv(location / f'data/{name}_wind.csv' ,sep=' ')
         
         if weather_data.solar:
             if dates:
@@ -330,7 +334,7 @@ class RenewableEnergy:
                 )
             else:
                 data = DataFrame({"Solar Power [kW]": self.solar_power_output})
-            data.to_csv('./'+location+'/'+name+'_Solar.csv',sep=' ')
+            data.to_csvlocation / f'data/{name}_solar.csv' ,sep=' ')
         pass
 
     def solar_zenith_angle(self,lat, lon, time_utc_array):

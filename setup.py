@@ -19,7 +19,7 @@ setup(
         "pysolar==0.11",
         "dill==0.3.9",
         "scipy==1.12.0",
-        "h5netcdf==1.4.0"
+        "h5netcdf==1.4.0",
         "netcdf4==1.7.2",
         "dask==2025.3.0"
     ]
