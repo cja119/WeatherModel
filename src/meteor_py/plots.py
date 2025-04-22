@@ -6,7 +6,7 @@ from matplotlib.pyplot import figure, axes, contourf, title, colorbar, cm, subpl
 from cartopy.crs import Robinson, PlateCarree, AlbersEqualArea, Mercator, Stereographic
 from cartopy.feature import NaturalEarthFeature, BORDERS, OCEAN, LAND, LAKES
 from numpy import datetime64
-from weathermodel.sampling import time_sampling
+from .sampling import time_sampling
 from numpy import arange, meshgrid, mean
 
 def globalplot(weather_data):

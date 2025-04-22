@@ -3,7 +3,7 @@ This module contains the DemandProfile class, which generates a demand profile b
 """
 from numpy import pi, cos
 from numpy.random import random, seed
-from weathermodel.plots import timeseriesplot
+from .plots import timeseriesplot
 from pandas import DataFrame
 
 
