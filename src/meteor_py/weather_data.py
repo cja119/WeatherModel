@@ -10,6 +10,8 @@ from .errors import  WSDataFeedError
 from .sampling import geospatial_sampling, time_sampling
 from .plots import globalplot,boxplot,timeseriesplot
 from os import getcwd, getenv
+from typing import Optional
+from pathlib import Path
 
 
 class WeatherData:
@@ -37,7 +39,7 @@ class WeatherData:
                       wind: bool = False, 
                       solar: bool = False, 
                       interval: int = 3600,\
-                      storage_location: str ="./tmp",
+                      storage_location: Optional[str] = None,
                       n_samp: int = 100,
                       sample_type: str = "Structured",
                       latitudes: tuple[float,float] = (-90,90),
@@ -45,7 +47,9 @@ class WeatherData:
                       environment_login: bool = False
                       ):
                 
-                dir = getcwd()
+                if storage_location is None:
+                    storage_location = Path(__file__).resolve().parent.parent / "data/cache"
+                    
 
                 # Setting boolean hyperparameters and location descriptor
                 self.wind = wind

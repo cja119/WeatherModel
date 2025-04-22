@@ -1,5 +1,5 @@
-/data/*
-!/weathermodel/.gitkeep
+/src/meteor_py/data/cache/*
+!/src/meteor_py/data/cache/.gitkeep
 !/data/*.pickle
 !/data/*.csv
 .env
