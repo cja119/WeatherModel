@@ -1,4 +1,3 @@
 include README.md
 include LICENSE
-include data/*.csv
-recursive-include data *
+recursive-include src/meteor_py/data *.csv
