@@ -334,7 +334,7 @@ class RenewableEnergy:
                 )
             else:
                 data = DataFrame({"Solar Power [kW]": self.solar_power_output})
-            data.to_csvlocation / f'data/{name}_solar.csv' ,sep=' ')
+            data.to_csv(location / f'data/{name}_solar.csv' ,sep=' ')
         pass
 
     def solar_zenith_angle(self,lat, lon, time_utc_array):
