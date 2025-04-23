@@ -304,7 +304,7 @@ class RenewableEnergy:
                                     to the left of the wind speed data.
         '''
         if location is None:
-            location = Path(__file__).resolve().parent.parent 
+            location = Path(__file__).resolve().parent 
             
         if weather_data.wind:
             if dates:

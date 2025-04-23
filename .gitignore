@@ -1,5 +1,5 @@
 # Ignore the cache directory, but keep .gitkeep
-/src/data/cache/*
+/src/meteor_py/data/cache/*
 !/src/data/cache/.gitkeep
 
 # Ignore .pickle and .csv files within the data directory, unless they are directly in /data/
