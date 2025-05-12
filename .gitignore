@@ -22,4 +22,5 @@ __pycache__/
 # Ignore the package information
 src/meteor_py.egg-info/
 
+/build
 

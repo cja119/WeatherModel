@@ -13,7 +13,7 @@ from numpy import datetime64
 from meteor_py import *
 
 start_date   =  datetime64('2022-01-01', 'ns') 
-end_date     = datetime64('2023-01-01', 'ns') 
+end_date     = datetime64('2022-02-01', 'ns') 
 
 weatherdata = WeatherData(
     date=(start_date, end_date),
