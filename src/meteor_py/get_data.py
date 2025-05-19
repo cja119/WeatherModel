@@ -9,7 +9,7 @@ class GetData:
         targ = Path(__file__).parent / "data"
         self._data = []
         for file_name in keys:
-            csvs_files = glob(targ / file_name)
+            csvs_files = glob(str(targ / file_name))
 
         for file_name in csvs_files:
             with open(file_name) as f:
